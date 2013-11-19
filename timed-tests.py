@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import random
 
-def renderEquationTemplate(top="\\vspace{1mm}", middle="\\hspace{3.5mm}", bottom="\\vspace{1mm}", randomizeTopAndMiddle=False):
+def renderEquationTemplate(top="\\vspace{1mm}", middle="\\hspace{3.5mm}", bottom="\\vspace{1mm}", randomizeTopAndMiddle=False, sign = "+"):
     if randomizeTopAndMiddle and random.random() < .5:
         holder = top
         top = middle
@@ -10,24 +10,23 @@ def renderEquationTemplate(top="\\vspace{1mm}", middle="\\hspace{3.5mm}", bottom
 \\frac{
     \\begin{array}[b]{r}
       %s\\\\
-      + %s
+      %s %s
     \\end{array}
   }{
   %s
   }
 \\end{equation*}
-''' % (top, middle, bottom)
+''' % (top, sign, middle, bottom)
 
 class Make10AddExtra:
     title = "Make 10 Add Extra"
     def generateEquation(self):
-        first = random.randint(2, 9)
-        print first
-        if (10 - first) < first:
-            second = random.randint(1, 10 - first + 1)
+        first = random.randint(7,8)
+        if first == 8:
+            second = random.randint(4, 6)
         else:
-            second = random.randint(10 - first + 1, 9)
-        return renderEquationTemplate(first, second)
+            second = random.randint(4,5)
+        return renderEquationTemplate(first, second, randomizeTopAndMiddle=True)
 
 class Doubles:
     title = "Doubles"
@@ -41,17 +40,24 @@ class DoublesPlus1:
         double = random.randint(1, 10)
         return renderEquationTemplate(top=double, middle=double+1, randomizeTopAndMiddle=True)
 
-class TenFrame:
+class TenFrameAddition:
     title = "Ten Frame"
     def generateEquation(self):
         tenPiece = random.randint(1, 9)
         return renderEquationTemplate(top=tenPiece, bottom=10)
 
-class Nines:
+class NinesAddition:
     title = "Nines"
     def generateEquation(self):
-        ninePiece = random.randint(1, 9)
+        ninePiece = random.randint(0, 9)
         return renderEquationTemplate(top=ninePiece, middle=9, randomizeTopAndMiddle=True)
+
+class CountBack:
+    title = "Count Back"
+    def generateEquation(self):
+        middle = random.randint(1, 3)
+        top = random.randint(middle, 10)
+        return renderEquationTemplate(top=top, middle=middle, sign="-")
 
 class TestGenerator:
     def __init__(self, problemGenerator, cols=4, rows=6):
@@ -74,10 +80,10 @@ class TestGenerator:
 
 if __name__ == '__main__':
     outFile = open("doubles.tex", "w")
-    tg1 = TestGenerator(Nines())
-    tg2 = TestGenerator(Doubles())
-    tg3 = TestGenerator(DoublesPlus1())
-    tg4 = TestGenerator(TenFrame())
+    tg1 = TestGenerator(CountBack())
+    tg2 = TestGenerator(CountBack())
+    tg3 = TestGenerator(CountBack())
+    tg4 = TestGenerator(CountBack())
     output = '''\\documentclass{article}
     \\usepackage{fullpage}
     \\usepackage{mathtools}
