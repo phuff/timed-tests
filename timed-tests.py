@@ -59,6 +59,20 @@ class CountBack:
         top = random.randint(middle, 10)
         return renderEquationTemplate(top=top, middle=middle, sign="-")
 
+class RelatedAddition:
+    title = "Related Addition"
+    def generateEquation(self):
+        middle = random.randint(4,8)
+        top = random.randint(11,15)
+        return renderEquationTemplate(top=top, middle=middle, sign="-")
+
+class CountUp:
+    title = "Count Up"
+    def generateEquation(self):
+        middle = random.randint(1, 3)
+        top = random.randint(5, 12)
+        return renderEquationTemplate(top=top, middle=top-middle, sign="-")
+
 class TestGenerator:
     def __init__(self, problemGenerator, cols=4, rows=6):
         self.problemGenerator = problemGenerator
@@ -79,11 +93,11 @@ class TestGenerator:
         return output
 
 if __name__ == '__main__':
-    outFile = open("doubles.tex", "w")
-    tg1 = TestGenerator(CountBack())
-    tg2 = TestGenerator(CountBack())
-    tg3 = TestGenerator(CountBack())
-    tg4 = TestGenerator(CountBack())
+    outFile = open("relatedaddition.tex", "w")
+    tg1 = TestGenerator(RelatedAddition())
+    tg2 = TestGenerator(RelatedAddition())
+    tg3 = TestGenerator(RelatedAddition())
+    tg4 = TestGenerator(RelatedAddition())
     output = '''\\documentclass{article}
     \\usepackage{fullpage}
     \\usepackage{mathtools}
@@ -98,5 +112,5 @@ if __name__ == '__main__':
     outFile.write(output)
     outFile.close()
     from subprocess import call
-    call(["pdflatex", "doubles.tex"])
-    call(["open", "doubles.pdf"])
+    call(["pdflatex", "relatedaddition.tex"])
+    call(["open", "relatedaddition.pdf"])
